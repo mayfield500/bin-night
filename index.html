@@ -3,26 +3,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=0.5">
   <link rel="manifest" href="manifest.json">
   <title>Bin Night Reminder</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-    }
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+
+  margin: 0;
+}
     .card {
   background: white;
   padding: 30px;
   width: 90%;
-  max-width: 500px;
-  margin: 20px auto;
-  border-radius: 12px;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
     h1 {
-      text-align: center;
-    }
+  text-align: center;
+  font-size: 36px;
+}
     .bin {
   font-size: 28px;
   margin: 20px 0;
