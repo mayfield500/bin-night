@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="manifest.json">
+  <title>Bin Night Reminder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    .bin {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h1>🗑️ Bin Night</h1>
+  <h1>Lorne Street Fawkner</h1>
+  <p id="date"></p>
+  <div id="bins"></div>
+</div>
+
+<script>
+  const today = new Date();
+
+// ✅ REAL scheduled dates
+const schedule = {
+  "2026-07-03": ["rubbish", "green", "recycling"],
+  "2026-07-10": ["rubbish", "green"],
+  "2026-07-17": ["rubbish", "green", "recycling"],
+  "2026-07-24": ["rubbish", "green", "glass"],
+  "2026-07-31": ["rubbish", "green", "recycling"],
+  "2026-08-07": ["rubbish", "green"],
+  "2026-08-14": ["rubbish", "green", "recycling"],
+  "2026-08-21": ["rubbish", "green", "glass"],
+  "2026-08-28": ["rubbish", "green", "recycling"],
+  "2026-09-04": ["rubbish", "green"],
+  "2026-09-11": ["rubbish", "green", "recycling"],
+  "2026-09-18": ["rubbish", "green", "glass"],
+  "2026-09-25": ["rubbish", "green", "recycling"],
+  "2026-10-02": ["rubbish", "green"],
+  "2026-10-09": ["rubbish", "green", "recycling"],
+  "2026-10-16": ["rubbish", "green", "glass"],
+  "2026-10-23": ["rubbish", "green", "recycling"],
+  "2026-10-30": ["rubbish", "green"],
+  "2026-11-06": ["rubbish", "green", "recycling"],
+  "2026-11-13": ["rubbish", "green", "glass"],
+  "2026-11-20": ["rubbish", "green", "recycling"],
+  "2026-11-27": ["rubbish", "green"],
+  "2026-12-04": ["rubbish", "green", "recycling"],
+  "2026-12-11": ["rubbish", "green", "glass"],
+  "2026-12-18": ["rubbish", "green", "recycling"],
+  "2026-12-26": ["rubbish", "green"],
+};
+
+
+const binsDiv = document.getElementById("bins");
+const dateDiv = document.getElementById("date");
+
+
+// Convert schedule dates into Date objects and sort them
+const upcomingDates = Object.keys(schedule)
+  .map(date => new Date(date))
+  .sort((a, b) => a - b);
+
+
+// Find the next collection date
+const nextCollectionDate = upcomingDates.find(date => date >= today);
+
+// Bins go out the night before collection
+let nextDate;
+
+if (nextCollectionDate) {
+  nextDate = new Date(nextCollectionDate);
+  nextDate.setDate(nextDate.getDate() - 1);
+}
+
+
+if (nextDate) {
+
+  // Use the collection date to get the bins
+const collectionDateStr = nextCollectionDate.toISOString().split("T")[0];
+
+const bins = schedule[collectionDateStr];
+
+
+  // Calculate days remaining
+  const daysUntil = Math.ceil(
+    (nextDate - today) / (1000 * 60 * 60 * 24)
+  );
+
+
+  if (daysUntil === 0) {
+  dateDiv.textContent =
+    "Bins out tonight!";
+} else {
+  dateDiv.textContent =
+    "Put bins out: " +
+    nextDate.toDateString() +
+    " (" + daysUntil + " days)";
+}
+
+
+  // Display bins
+  binsDiv.innerHTML = bins.map(bin => {
+
+    switch (bin) {
+      case "rubbish":
+        return "<div class='bin'>🔴 Rubbish bin</div>";
+
+      case "green":
+        return "<div class='bin'>🟢 Green waste bin</div>";
+
+      case "recycling":
+        return "<div class='bin'>🟡 Recycling bin</div>";
+
+      case "glass":
+        return "<div class='bin'>🟣 Glass bin</div>";
+    }
+
+  }).join("");
+
+
+} else {
+
+  dateDiv.textContent = "No upcoming bin dates";
+  binsDiv.innerHTML = "No bins scheduled 🎉";
+
+}
+</script>
+
+</body>
+</html>
