@@ -119,15 +119,24 @@ const collectionDateStr = nextCollectionDate.toISOString().split("T")[0];
 const bins = schedule[collectionDateStr];
 
 
-  // Calculate days remaining
-  const daysUntil = Math.ceil(
-    (nextDate - today) / (1000 * 60 * 60 * 24)
-  );
+  // Calculate days remaining (accurate)
+const todayMidnight = new Date(today);
+todayMidnight.setHours(0, 0, 0, 0);
 
+const nextMidnight = new Date(nextDate);
+nextMidnight.setHours(0, 0, 0, 0);
 
-  if (daysUntil === 0) {
+const daysUntil = Math.ceil(
+  (nextMidnight - todayMidnight) / (1000 * 60 * 60 * 24)
+);
+
+// Display message
+if (daysUntil === 0) {
+  dateDiv.textContent = "Bins out tonight!";
+} else if (daysUntil === 1) {
   dateDiv.textContent =
-    "Bins out tonight!";
+    "Put bins out tomorrow:\n" +
+    nextDate.toDateString();
 } else {
   dateDiv.textContent =
     "Put bins out:\n" +
